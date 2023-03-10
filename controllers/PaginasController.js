@@ -1,4 +1,7 @@
 const filmes = require('../database/filmes.json');
+const fs = require('fs');
+const path = require('path');
+const uuid = require('uuid');
 
 const PaginasController = {
     showIndex: (req, res)=>{
@@ -22,11 +25,15 @@ const PaginasController = {
         res.render('filme-edit.ejs', {filme});
     },  
 
+    updateFilme: (req, res)=>{
+
+    },
+
     buscarFilmes: (req, res) =>{
 
         let trecho = req.query.busca;
         let censura = req.query.censura;
-        
+
         let filtradora = filme => {
             let tituloOk = filme.titulo.toLowerCase().includes(trecho.toLowerCase());
             let censuraOk = filme.censura <= censura;
@@ -55,8 +62,26 @@ const PaginasController = {
         fs.writeFileSync(pathFilmes, JSON.stringify(filmes, null, 4));
 
         return res.redirect('/')
-    }
+    },
+    
+    createFilme: (req,res) => {
+        
+        const filme = {
+            "id": uuid.v4(),
+            "cartaz": "fc0f5d74b0ee816a.jpg",
+            "titulo": req.body.titulo,
+            "generos": req.body.generos,
+            "censura": req.body.censura,
+            "trailer": req.body.trailer,
+            "sinopse": req.body.sinopse
+        }
 
+        filmes.push(filme);
+        fs.writeFileSync(path.resolve(__dirname + '/../database/filmes.json'), JSON.stringify(filmes, null, 4));
+
+        res.redirect('/');
+
+    }
 }
 
 module.exports = PaginasController;

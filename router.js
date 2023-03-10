@@ -17,10 +17,14 @@ router.get('/filme/:id', PaginasController.showFilme);
 
 router.get('/busca', PaginasController.buscarFilmes);
 
+router.post('/filme/store', PaginasController.addFilme);
+
+router.post('/adm/filmes/store' , PaginasController.createFilme);
+
 
 
 router.get('/adm/filmes/:id/edit', PaginasController.editFilme);
-router.post('/adm/filmes/:id/update' , PaginasController.updateFilme);
+router.post('/adm/filmes/:id/update', PaginasController.updateFilme);
 
 
 
