@@ -17,6 +17,11 @@ const PaginasController = {
         return res.render('filme.ejs', {filme});
 
     },
+
+    create: (req, res) =>{
+        res.render('filme-create.ejs');
+    },
+
     editFilme: (req, res) =>{
         let id = req.params.id
         
@@ -36,8 +41,8 @@ const PaginasController = {
 
         let filtradora = filme => {
             let tituloOk = filme.titulo.toLowerCase().includes(trecho.toLowerCase());
-            let censuraOk = filme.censura <= censura;
-            return tituloOk && censuraOk;
+            //let censuraOk = filme.censura <= censura;
+            return tituloOk;
         }
 
         let filmesFiltrados = filmes.filter(filtradora);
@@ -65,10 +70,11 @@ const PaginasController = {
     },
     
     createFilme: (req,res) => {
-        
+        let novoNome = `${Date.now()}-${req.file.originalname}`
+        fs.renameSync(req.file.path, `public/img/cartazes/${novoNome}`);
         const filme = {
             "id": uuid.v4(),
-            "cartaz": "fc0f5d74b0ee816a.jpg",
+            "cartaz": novoNome,
             "titulo": req.body.titulo,
             "generos": req.body.generos,
             "censura": req.body.censura,

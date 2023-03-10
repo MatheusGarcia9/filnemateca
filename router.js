@@ -1,3 +1,6 @@
+const multer = require('multer');
+const upload = multer({dest:'public/img/cartazes'});
+
 // Importando express
 const express = require('express');
 
@@ -11,15 +14,13 @@ const router = express.Router();
 
 router.get('/', PaginasController.showIndex);
 
-router.get('/filme/create', FilmesController.create);
+router.get('/filme/create', PaginasController.create);
 
 router.get('/filme/:id', PaginasController.showFilme);
 
 router.get('/busca', PaginasController.buscarFilmes);
 
-router.post('/filme/store', PaginasController.addFilme);
-
-router.post('/adm/filmes/store' , PaginasController.createFilme);
+router.post('/adm/filme/store', upload.single('cartaz'), PaginasController.createFilme);
 
 
 
